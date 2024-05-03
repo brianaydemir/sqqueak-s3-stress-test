@@ -1,0 +1,15 @@
+# bot.sub
+
+executable = run.sh
+
+log = result_$(Cluster)_$(Process).log
+error = result_$(Cluster)_$(Process).err
+output = result_$(Cluster)_$(Process).out
+
+transfer_input_files = make.sh,send.sh,../pelican-test.tok,/usr/local/bin/mc
+
+request_cpus = 1
+request_memory = 1GB
+request_disk = 5GB
+
+queue 3
