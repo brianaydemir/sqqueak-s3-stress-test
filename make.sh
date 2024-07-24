@@ -10,9 +10,9 @@ fi
 num_files="$1"
 file_size="$2"
 min=1
-s_max=100
-m_max=10
-l_max=1
+s_max=2048
+m_max=512
+l_max=2
 
 # Check if the number of files is a positive integer
 if ! [[ "$num_files" =~ ^[1-9][0-9]*$ ]]; then
@@ -20,9 +20,14 @@ if ! [[ "$num_files" =~ ^[1-9][0-9]*$ ]]; then
         exit 1
 fi
 
-mkdir files
-# Generate a random file based on the specified size
-for i in `eval echo {1..$1}`; do
+# Check if the destination directory is actually a directory
+if [ ! -d "$destination_dir" ]; then
+        echo "Destination is not a directory."
+        exit 1
+fi
+
+# Generate random files based on the specified size
+for i in $(eval echo "{1..$num_files}"); do
         case "$file_size" in
                 "small")
                         dd bs=1K count=$(($RANDOM%$s_max + $min)) if=/dev/urandom of=./files/s$i
