@@ -1,4 +1,4 @@
-# !/bin/bash
+#!/bin/bash
 # Check if the correct number of positional arguments is provided
 if [ $# -ne 3 ]; then
         echo "Usage: $0 [mc|pel] [get|put]"
