@@ -1,14 +1,15 @@
 #!/bin/bash
 
-# Check if two positional arguments are provided
-if [ "$#" -ne 2 ]; then
-        echo "Usage: $0 <num_files> <file_size>"
+# Check if the two required positional arguments are provided
+if [ "$#" -lt 2 ]; then
+        echo "Usage: $0 <num_files> <file_size> [destination_dir]"
         exit 1
 fi
 
-# Get the number of files and file size from positional arguments
+# Get the number of files, file size, and destination directory from positional arguments
 num_files="$1"
 file_size="$2"
+destination_dir="${3:-.}"
 min=1
 s_max=2048
 m_max=512
@@ -30,13 +31,13 @@ fi
 for i in $(eval echo "{1..$num_files}"); do
         case "$file_size" in
                 "small")
-                        dd bs=1K count=$(($RANDOM%$s_max + $min)) if=/dev/urandom of=./files/s$i
+                        dd bs=1K count=$((RANDOM % s_max + min)) if=/dev/urandom of="${destination_dir}/small-$i"
                         ;;
                 "medium")
-                        dd bs=1M count=$(($RANDOM%$m_max + $min)) if=/dev/urandom of=./files/m$i
+                        dd bs=1M count=$((RANDOM % m_max + min)) if=/dev/urandom of="${destination_dir}/medium-$i"
                         ;;
                 "large")
-                        dd bs=1G count=$(($RANDOM%$l_max + $min)) if=/dev/urandom of=./files/l$i
+                        dd bs=1G count=$((RANDOM % l_max + min)) if=/dev/urandom of="${destination_dir}/large-$i"
                         ;;
                 *)
                         echo "Invalid file size. Please specify 'small', 'medium', or 'large'."
