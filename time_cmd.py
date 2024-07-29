@@ -22,9 +22,10 @@ def main() -> None:
     sys.stderr.flush()
 
     bytes = os.stat(filename).st_size
+    rate = (bytes / 1024 / 1024) / elapsed
 
     with open("stats.csv", mode="a", encoding="utf-8") as fp:
-        print(f"{prefix},{bytes},{start},{end},{elapsed}", file=fp)
+        print(f"{prefix},{bytes},{start},{end},{elapsed},{rate}", file=fp)
 
     sys.exit(process.returncode)
 
