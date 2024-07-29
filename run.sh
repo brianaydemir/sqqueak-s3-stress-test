@@ -27,7 +27,7 @@ done
 
 ## Delete the local copy of our test data.
 
-rm -rf "${destination_dir:?}"/*
+rm -f "${destination_dir:?}"/{small,medium,large}-*
 
 
 ## Wait for a bit.
