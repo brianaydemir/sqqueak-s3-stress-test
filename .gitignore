@@ -1,2 +1,6 @@
 ## Temporary files created by vim.
 *.swp
+
+## Access tokens and other assorted credentials.
+*.tok
+/.mc

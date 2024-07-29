@@ -1,15 +1,27 @@
-# bot.sub
+num_files = $RANDOM_INTEGER(1, 5)
+file_size = $RANDOM_CHOICE(small, medium, large)
+destination_dir = $(JobId)
 
 executable = run.sh
+args = $(num_files) $(file_size) $(destination_dir) mc
 
-log = result_$(Cluster)_$(Process).log
-error = result_$(Cluster)_$(Process).err
-output = result_$(Cluster)_$(Process).out
+transfer_input_files = make.sh, move.sh, time_cmd.py, pelican-token.tok, .mc, /usr/local/bin/mc
+transfer_output_files = md5sums.txt, stats.csv
+transfer_output_remaps = "md5sums.txt=log/$(JobID).md5sums.txt; stats.csv=log/$(JobID).stats.csv"
 
-transfer_input_files = make.sh,move.sh,../pelican-test.tok,/usr/local/bin/mc
+log = log/job.log
+output = log/$(JobID).out
+error = log/$(JobID).err
 
 request_cpus = 1
-request_memory = 1GB
-request_disk = 5GB
+request_memory = 12GB
+request_disk = 12GB
 
-queue 3
+stream_output = true
+stream_error = true
+on_exit_hold = ExitCode =!= 0
+
++DoIT_S3_Scaling_Test = true
++Pelican_Origin_Test = true
+
+queue 1

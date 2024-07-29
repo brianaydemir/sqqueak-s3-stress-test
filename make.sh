@@ -1,10 +1,14 @@
 #!/bin/bash
 
+set -eux
+
+
 # Check if the two required positional arguments are provided
 if [ "$#" -lt 2 ]; then
         echo "Usage: $0 <num_files> <file_size> [destination_dir]"
         exit 1
 fi
+
 
 # Get the number of files, file size, and destination directory from positional arguments
 num_files="$1"
@@ -14,6 +18,7 @@ min=1
 s_max=2048
 m_max=512
 l_max=2
+
 
 # Check if the number of files is a positive integer
 if ! [[ "$num_files" =~ ^[1-9][0-9]*$ ]]; then
@@ -26,6 +31,7 @@ if [ ! -d "$destination_dir" ]; then
         echo "Destination is not a directory."
         exit 1
 fi
+
 
 # Generate random files based on the specified size
 for i in $(eval echo "{1..$num_files}"); do
