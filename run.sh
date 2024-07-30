@@ -2,6 +2,8 @@
 
 set -eux
 
+current_time() { python3 -c 'import time; print(time.time())'; }
+
 
 ## Command-line arguments (reminiscent of `make.sh`).
 
@@ -21,7 +23,14 @@ md5sum "${destination_dir}"/* > md5sums.txt
 ## Upload the test data.
 
 for x in "${destination_dir}"/*; do
-  ./time_cmd.py "${x},put" "${x}" ./move.sh "${mode}" put "${x}"
+  start=$(current_time)
+
+  ./move.sh "${mode}" put "${x}"
+
+  end=$(current_time)
+  bytes=$(stat -c "%s" "${x}")
+
+  printf '%s\n' >>stats.csv "${x},put,${bytes},${start},${end}"
 done
 
 
@@ -38,7 +47,14 @@ sleep "$((RANDOM % 60))"
 ## Download the test data.
 
 for x in $(awk '{ print $2 }' md5sums.txt); do
-  ./time_cmd.py "${x},get" "${x}" ./move.sh "${mode}" get "${x}"
+  start=$(current_time)
+
+  ./move.sh "${mode}" get "${x}"
+
+  end=$(current_time)
+  bytes=$(stat -c "%s" "${x}")
+
+  printf '%s\n' >>stats.csv "${x},put,${bytes},${start},${end}"
 done
 
 

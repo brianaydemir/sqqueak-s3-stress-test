@@ -3,15 +3,15 @@
 set -eux
 
 
-# Required to run `mc` from the current working directory.
+# Required to run `mc` from the current working directory
 export PATH=".:$PATH"
 
 
 # Hard-code command-line flags and path prefixes
-mc_cmd="./mc --config-dir .mc --debug"
-mc_object_prefix="jhiemstra/jhiemstra/doit-s3-scaling-test/mc"
-pelican_cmd="pelican -f https://osg-htc.org -t pelican-token.tok --debug"
-pelican_object_prefix="/test-rdrive-s3/jhiemstra/doit-s3-scaling-test/pelican"
+mc_cmd="mc --config-dir .mc --debug"
+mc_object_prefix="campus/test-tiger-campus01/doit-s3-scaling-test/mc"
+# pelican_cmd="pelican -f https://osg-htc.org -t pelican-token.tok --debug"
+# pelican_object_prefix="/{namespace}/{prefix}"
 
 
 # Check if the correct number of positional arguments is provided
@@ -24,10 +24,10 @@ fi
 # Check if the first argument is "mc" or "pelican"
 if [ "$1" = "mc" ]; then
         if [ "$2" = "get" ]; then
-                echo "[::: Getting ${3} via mc from ${mc_object_prefix} :::]"
+                echo "[::: Getting ${3} via mc from ${mc_object_prefix} at $(date) :::]"
                 ${mc_cmd} cp "${mc_object_prefix}/${3}" "${3}"
         elif [ "$2" = "put" ]; then
-                echo "[::: Sending ${3} via mc to ${mc_object_prefix} :::]"
+                echo "[::: Sending ${3} via mc to ${mc_object_prefix} at $(date) :::]"
                 ${mc_cmd} cp "${3}" "${mc_object_prefix}/${3}"
         else
                 echo "Invalid second argument for 'mc'. Usage: $0 mc [get|put] [file]"
@@ -35,10 +35,10 @@ if [ "$1" = "mc" ]; then
         fi
 elif [ "$1" = "pelican" ]; then
         if [ "$2" = "get" ]; then
-                echo "[::: Getting ${3} via pelican from ${pelican_object_prefix} :::]"
+                echo "[::: Getting ${3} via pelican from ${pelican_object_prefix} at $(date) :::]"
                 ${pelican_cmd} object get "${pelican_object_prefix}/${3}" "${3}"
         elif [ "$2" = "put" ]; then
-                echo "[::: Sending ${3} via pelican to ${pelican_object_prefix} :::]"
+                echo "[::: Sending ${3} via pelican to ${pelican_object_prefix} at $(date) :::]"
                 ${pelican_cmd} object put "${3}" "${pelican_object_prefix}/${3}"
         else
                 echo "Invalid second argument for 'pelican'. Usage: $0 pelican [get|put] [file]"
@@ -49,5 +49,5 @@ else
         exit 1
 fi
 
-echo "[::: Complete :::]"
+echo "[::: Completed on $(date) :::]"
 exit 0

@@ -1,11 +1,12 @@
-num_files = $RANDOM_INTEGER(1, 5)
-file_size = $RANDOM_CHOICE(small, medium, large)
+# Define the distribution of files to create.
+num_files = $RANDOM_CHOICE(1, 2, 2, 2, 3, 3, 4)
+file_size = $RANDOM_CHOICE(medium)
 destination_dir = $(JobId)
 
 executable = run.sh
 args = $(num_files) $(file_size) $(destination_dir) mc
 
-transfer_input_files = make.sh, move.sh, time_cmd.py, pelican-token.tok, .mc, /usr/local/bin/mc
+transfer_input_files = make.sh, move.sh, .mc, /usr/local/bin/mc
 transfer_output_files = md5sums.txt, stats.csv
 transfer_output_remaps = "md5sums.txt=log/$(JobID).md5sums.txt; stats.csv=log/$(JobID).stats.csv"
 
@@ -14,14 +15,17 @@ output = log/$(JobID).out
 error = log/$(JobID).err
 
 request_cpus = 1
-request_memory = 12GB
-request_disk = 12GB
+request_memory = 2GB
+request_disk = 4GB
 
+# Make it easier to debug issues involving the network.
+requirements = Facility =?= "OneNeck"
+
+# Make it easier to monitor and follow-up on jobs.
 stream_output = true
 stream_error = true
 on_exit_hold = ExitCode =!= 0
 
 +DoIT_S3_Scaling_Test = true
-+Pelican_Origin_Test = true
 
 queue 1
