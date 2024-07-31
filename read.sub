@@ -1,0 +1,29 @@
+# Define the directory where files should be created.
+destination_dir = $(JobId)
+
+executable = read.sh
+args = $(destination_dir) mc $(md5sums_file)
+
+transfer_input_files = make.sh, move.sh, .mc, mc
+transfer_output_files = stats.csv
+transfer_output_remaps = "stats.csv=log/$(JobID).stats.csv"
+
+log = log/job.log
+output = log/$(JobID).out
+error = log/$(JobID).err
+
+request_cpus = 1
+request_memory = 2GB
+request_disk = 4GB
+
+# Make it easier to debug issues involving the network.
+requirements = Facility =?= "OneNeck"
+
+# Make it easier to monitor and follow-up on jobs.
+stream_output = true
+stream_error = true
+on_exit_hold = ExitCode =!= 0
+
++DoIT_S3_Scaling_Test = true
+
+queue md5sums_file matching files [:1] log/*.md5sums.txt
