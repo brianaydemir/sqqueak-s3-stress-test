@@ -9,7 +9,7 @@ current_time() { python3 -c 'import time; print(time.time())'; }
 
 destination_dir="${1:-.}"
 mode="$2"
-md5sums_file="$3"
+md5sums_file="$(basename -- "$3")"
 
 
 ## Create the download directory.

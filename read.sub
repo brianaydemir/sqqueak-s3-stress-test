@@ -4,7 +4,7 @@ destination_dir = $(JobId)
 executable = read.sh
 args = $(destination_dir) mc $(md5sums_file)
 
-transfer_input_files = make.sh, move.sh, .mc, mc
+transfer_input_files = make.sh, move.sh, .mc, mc, $(md5sums_file)
 transfer_output_files = stats.csv
 transfer_output_remaps = "stats.csv=log/$(JobID).stats.csv"
 
